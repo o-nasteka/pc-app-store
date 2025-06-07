@@ -1,0 +1,68 @@
+# Composer
+/vendor/
+composer.lock
+
+# Laravel / Symfony cache, logs, config
+/storage/
+bootstrap/cache/
+.env
+.env.*
+.phpunit.result.cache
+
+# Symfony specific
+/var/
+
+# PHPUnit
+.phpunit.result.cache
+
+# IDEs
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node modules (якщо є фронтенд)
+/node_modules/
+/public/hot
+/public/storage
+/build/
+/npm-debug.log
+yarn.lock
+pnpm-lock.yaml
+
+# Laravel Telescope & Horizon
+storage/logs/*.log
+/storage/debugbar/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/framework/cache/data/*
+
+# Laravel Nova
+nova-components/
+
+# Laravel Mix
+/public/mix-manifest.json
+/public/js/*.js
+/public/css/*.css
+/public/js/*.map
+/public/css/*.map
+
+# Misc
+*.log
+*.cache
+*.tmp
+*.bak
+*.swp
+*.swo
+*.swn
+*.sql
+*.sqlite
+*.sqlite3
+
+# Docker / local environments
+.docker/
+.ddev/
+homestead.yaml
+Homestead.json
