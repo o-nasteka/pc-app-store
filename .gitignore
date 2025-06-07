@@ -12,9 +12,6 @@ bootstrap/cache/
 # Symfony specific
 /var/
 
-# PHPUnit
-.phpunit.result.cache
-
 # IDEs
 .idea/
 .vscode/
@@ -23,7 +20,7 @@ bootstrap/cache/
 .DS_Store
 Thumbs.db
 
-# Node modules (якщо є фронтенд)
+# Node modules
 /node_modules/
 /public/hot
 /public/storage
