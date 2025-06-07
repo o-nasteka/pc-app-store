@@ -66,3 +66,6 @@ nova-components/
 .ddev/
 homestead.yaml
 Homestead.json
+
+# Laradock
+laradock
