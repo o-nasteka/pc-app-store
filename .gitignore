@@ -2,67 +2,71 @@
 /vendor/
 composer.lock
 
-# Laravel / Symfony cache, logs, config
-/storage/
-bootstrap/cache/
+# Environment files
 .env
-.env.*
-.phpunit.result.cache
+.env.local
+.env.*.local
 
-# Symfony specific
-/var/
+# Cache and logs
+/var/cache/*
+/var/logs/*
+/var/sessions/*
+!var/cache/.gitkeep
+!var/logs/.gitkeep
+!var/sessions/.gitkeep
 
-# IDEs
+# IDE
 .idea/
 .vscode/
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Node modules
-/node_modules/
-/public/hot
-/public/storage
-/build/
-/npm-debug.log
-yarn.lock
-pnpm-lock.yaml
-
-# Laravel Telescope & Horizon
-storage/logs/*.log
-/storage/debugbar/*
-/storage/framework/sessions/*
-/storage/framework/views/*
-/storage/framework/cache/data/*
-
-# Laravel Nova
-nova-components/
-
-# Laravel Mix
-/public/mix-manifest.json
-/public/js/*.js
-/public/css/*.css
-/public/js/*.map
-/public/css/*.map
-
-# Misc
-*.log
-*.cache
-*.tmp
-*.bak
 *.swp
 *.swo
-*.swn
-*.sql
-*.sqlite
-*.sqlite3
+*~
+.DS_Store
 
-# Docker / local environments
-.docker/
-.ddev/
-homestead.yaml
-Homestead.json
+# PHPUnit
+.phpunit.result.cache
+/phpunit.xml
 
-# Laradock
-laradock
+# PHPStan
+/phpstan.neon
+
+# Coverage reports
+/coverage/
+*.coverage
+.coverage.*
+
+# Build files
+/build/
+/dist/
+
+# Node (if you add npm later)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Docker volumes
+/docker/mysql/data/
+
+# Uploaded files (if any)
+/public/uploads/*
+!public/uploads/.gitkeep
+
+# Downloaded files
+/public/downloads/*.exe
+/public/downloads/*.zip
+!public/downloads/.gitkeep
+
+# OS files
+Thumbs.db
+Desktop.ini
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+
+# Temporary files
+*.tmp
+*.temp
+/tmp/
