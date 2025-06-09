@@ -1,0 +1,73 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use App\Config\Container;
+use App\Command\CreateAdminCommand;
+use App\Domain\Repository\UserRepositoryInterface;
+use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\Configuration\Migration\PhpFile;
+use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
+use Doctrine\Migrations\Tools\Console\Command;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\ORM\ORMSetup;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Dotenv\Dotenv;
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+// Load env variables
+$dotenv = new Dotenv();
+$dotenv->loadEnv(dirname(__DIR__) . '/.env');
+
+// ORM config
+$config = ORMSetup::createAttributeMetadataConfiguration(
+    [dirname(__DIR__) . '/src/Domain/Entity'], // Path to your entities
+    true
+);
+
+// Connection config
+$connection = DriverManager::getConnection([
+    'dbname'   => $_ENV['DB_NAME'],
+    'user'     => $_ENV['DB_USER'],
+    'password' => $_ENV['DB_PASSWORD'],
+    'host'     => $_ENV['DB_HOST'],
+    'port'     => $_ENV['DB_PORT'],
+    'driver'   => 'pdo_mysql',
+    'charset'  => 'utf8mb4',
+], $config);
+
+// EntityManager instance
+$entityManager = new EntityManager($connection, $config);
+
+// Create app container for custom commands
+$container = new Container();
+$container->build();
+
+// Migration config
+$migrationsConfig = new PhpFile(dirname(__DIR__) . '/migrations.php');
+$dependencyFactory = DependencyFactory::fromEntityManager($migrationsConfig, new ExistingEntityManager($entityManager));
+
+// Console app
+$application = new Application('App CLI', '1.0.0');
+
+// Register Doctrine Migration commands
+$application->addCommands([
+    new Command\DumpSchemaCommand($dependencyFactory),
+    new Command\ExecuteCommand($dependencyFactory),
+    new Command\GenerateCommand($dependencyFactory),
+    new Command\LatestCommand($dependencyFactory),
+    new Command\MigrateCommand($dependencyFactory),
+    new Command\RollupCommand($dependencyFactory),
+    new Command\StatusCommand($dependencyFactory),
+    new Command\VersionCommand($dependencyFactory),
+]);
+
+// Register custom commands
+$application->add(new CreateAdminCommand(
+    $container->get(UserRepositoryInterface::class)
+));
+
+$application->run();
