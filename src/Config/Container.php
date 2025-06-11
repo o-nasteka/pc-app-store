@@ -207,8 +207,8 @@ final class Container
         $this->factories[StatisticsController::class] = function (): StatisticsController {
             return new StatisticsController(
                 $this->get(Environment::class),
-                $this->get(GetStatisticsUseCase::class),
-                $this->get(TrackPageViewUseCase::class),
+                $this->get(ActivityRepositoryInterface::class),
+                $this->get(UserRepositoryInterface::class),
                 $this->get(SessionInterface::class)
             );
         };
@@ -216,9 +216,8 @@ final class Container
         $this->factories[ReportsController::class] = function (): ReportsController {
             return new ReportsController(
                 $this->get(Environment::class),
-                $this->get(GetReportUseCase::class),
-                $this->get(TrackPageViewUseCase::class),
-                $this->get(SessionInterface::class)
+                $this->get(SessionInterface::class),
+                $this->get(ActivityRepositoryInterface::class)
             );
         };
 
@@ -226,8 +225,6 @@ final class Container
         $this->factories[ActivityController::class] = function (): ActivityController {
             return new ActivityController(
                 $this->get(TrackButtonClickUseCase::class),
-                $this->get(GetStatisticsUseCase::class),
-                $this->get(GetReportUseCase::class),
                 $this->get(SessionInterface::class)
             );
         };

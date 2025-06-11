@@ -51,4 +51,13 @@ interface UserRepositoryInterface
      * @throws \RuntimeException
      */
     public function delete(User $user): void;
+
+    /**
+     * Check if a user exists by email
+     *
+     * @param Email $email
+     * @return bool
+     * @throws \RuntimeException
+     */
+    public function existsByEmail(Email $email): bool;
 }

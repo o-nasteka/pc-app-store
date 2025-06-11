@@ -6,54 +6,53 @@ namespace App\Domain\ValueObject;
 
 final class ActivityType
 {
-    public const TYPE_LOGIN = 'login';
-    public const TYPE_LOGOUT = 'logout';
-    public const TYPE_REGISTRATION = 'registration';
-    public const TYPE_VIEW_PAGE = 'view_page';
-    public const TYPE_BUTTON_CLICK = 'button_click';
+    private const LOGIN = 'login';
+    private const LOGOUT = 'logout';
+    private const REGISTRATION = 'registration';
+    private const VIEW_PAGE = 'view_page';
+    private const BUTTON_CLICK = 'button_click';
 
-    private const VALID_TYPES = [
-        self::TYPE_LOGIN,
-        self::TYPE_LOGOUT,
-        self::TYPE_REGISTRATION,
-        self::TYPE_VIEW_PAGE,
-        self::TYPE_BUTTON_CLICK,
-    ];
-
-    private string $value;
-
-    public function __construct(string $value)
+    private function __construct(private string $value)
     {
-        if (!in_array($value, self::VALID_TYPES, true)) {
-            throw new \InvalidArgumentException("Invalid activity type: {$value}");
+        if (!in_array($value, [
+            self::LOGIN,
+            self::LOGOUT,
+            self::REGISTRATION,
+            self::VIEW_PAGE,
+            self::BUTTON_CLICK
+        ])) {
+            throw new \InvalidArgumentException('Invalid activity type');
         }
-
-        $this->value = $value;
     }
 
     public static function login(): self
     {
-        return new self(self::TYPE_LOGIN);
+        return new self(self::LOGIN);
     }
 
     public static function logout(): self
     {
-        return new self(self::TYPE_LOGOUT);
+        return new self(self::LOGOUT);
     }
 
     public static function registration(): self
     {
-        return new self(self::TYPE_REGISTRATION);
+        return new self(self::REGISTRATION);
     }
 
     public static function viewPage(): self
     {
-        return new self(self::TYPE_VIEW_PAGE);
+        return new self(self::VIEW_PAGE);
     }
 
     public static function buttonClick(): self
     {
-        return new self(self::TYPE_BUTTON_CLICK);
+        return new self(self::BUTTON_CLICK);
+    }
+
+    public static function fromString(string $type): self
+    {
+        return new self($type);
     }
 
     public function getValue(): string

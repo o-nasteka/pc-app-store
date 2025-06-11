@@ -24,7 +24,8 @@ final class LogoutUseCase
             ActivityId::generate(),
             UserId::fromString($request->userId),
             ActivityType::logout(),
-            [],
+            null,
+            null,
             $request->ipAddress,
             $request->userAgent
         );

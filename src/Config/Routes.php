@@ -48,6 +48,10 @@ final class Routes
         ], [], [], '', [], ['GET']));
 
         // Admin routes
+        $routes->add('admin_statistics', new Route('/admin/statistics', [
+            '_controller' => 'App\\Presentation\\Web\\StatisticsController::show'
+        ], [], [], '', [], ['GET']));
+
         $routes->add('statistics', new Route('/statistics', [
             '_controller' => 'App\\Presentation\\Web\\StatisticsController::index'
         ], [], [], '', [], ['GET']));
@@ -56,9 +60,13 @@ final class Routes
             '_controller' => 'App\\Presentation\\Web\\ReportsController::index'
         ], [], [], '', [], ['GET']));
 
+        $routes->add('admin_reports', new Route('/admin/reports', [
+            '_controller' => 'App\\Presentation\\Web\\ReportsController::show'
+        ], [], [], '', [], ['GET']));
+
         // API routes
-        $routes->add('api_track_click', new Route('/api/activity/track-click', [
-            '_controller' => 'App\\Presentation\\Api\\ActivityController::trackButtonClick'
+        $routes->add('api_track_activity', new Route('/api/activity/track', [
+            '_controller' => 'App\\Presentation\\Api\\ActivityController::track'
         ], [], [], '', [], ['POST']));
 
         $routes->add('api_statistics', new Route('/api/statistics', [

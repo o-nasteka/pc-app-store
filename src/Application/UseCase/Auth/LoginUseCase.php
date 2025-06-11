@@ -51,7 +51,8 @@ final class LoginUseCase
             ActivityId::generate(),
             $user->getId(),
             ActivityType::login(),
-            [],
+            null, // page
+            null, // button
             $request->ipAddress,
             $request->userAgent
         );

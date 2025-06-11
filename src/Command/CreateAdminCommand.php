@@ -58,7 +58,6 @@ final class CreateAdminCommand extends Command
 
             // Create admin user
             $user = User::create(
-                UserId::generate(),
                 new Email($email),
                 Password::fromPlainText($password),
                 $name,

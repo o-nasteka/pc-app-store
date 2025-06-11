@@ -12,7 +12,11 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libicu-dev \
     && docker-php-ext-configure intl \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl opcache
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl opcache \
+    # Install Node.js, npm, and yarn
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g yarn
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -46,4 +50,10 @@ RUN groupadd -g 1000 www && useradd -u 1000 -ms /bin/bash -g www www
 # Change ownership
 RUN chown -R www:www /var/www
 
+# Copy entrypoint script and make it executable
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 USER www
+
+ENTRYPOINT ["/entrypoint.sh"]

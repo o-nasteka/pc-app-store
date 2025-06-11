@@ -34,15 +34,14 @@ final class AuthController
             return new RedirectResponse('/');
         }
 
-        $html = $this->twig->render('auth/login.html.twig', [
+        return new Response($this->twig->render('auth/login.html.twig', [
             'error' => $this->session->getFlashBag()->get('error')
-        ]);
-
-        return new Response($html);
+        ]));
     }
 
     public function login(Request $request): Response
     {
+        error_log('DEBUG: Entered login method');
         try {
             $loginRequest = new LoginRequest(
                 $request->request->get('email', ''),
@@ -53,7 +52,6 @@ final class AuthController
 
             $response = $this->loginUseCase->execute($loginRequest);
 
-            // Store user in session
             $this->session->set('user', [
                 'id' => $response->userId,
                 'email' => $response->email,
@@ -66,6 +64,7 @@ final class AuthController
             $this->session->getFlashBag()->add('error', 'Invalid email or password');
             return new RedirectResponse('/login');
         } catch (\Exception $e) {
+            error_log('Login error: ' . $e->getMessage() . ' ' . $e->getTraceAsString());
             $this->session->getFlashBag()->add('error', 'An error occurred. Please try again.');
             return new RedirectResponse('/login');
         }
@@ -77,12 +76,9 @@ final class AuthController
             return new RedirectResponse('/');
         }
 
-        $html = $this->twig->render('auth/register.html.twig', [
-            'error' => $this->session->getFlashBag()->get('error'),
-            'success' => $this->session->getFlashBag()->get('success')
-        ]);
-
-        return new Response($html);
+        return new Response($this->twig->render('auth/register.html.twig', [
+            'error' => $this->session->getFlashBag()->get('error')
+        ]));
     }
 
     public function register(Request $request): Response
@@ -96,7 +92,7 @@ final class AuthController
                 $request->headers->get('User-Agent')
             );
 
-            $response = $this->registerUseCase->execute($registerRequest);
+            $this->registerUseCase->execute($registerRequest);
 
             $this->session->getFlashBag()->add('success', 'Registration successful! Please login.');
             return new RedirectResponse('/login');

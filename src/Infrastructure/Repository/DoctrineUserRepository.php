@@ -27,7 +27,8 @@ final class DoctrineUserRepository implements UserRepositoryInterface
             'name' => $user->getName(),
             'role' => $user->getRole()->getValue(),
             'created_at' => $user->getCreatedAt()->format('Y-m-d H:i:s'),
-            'last_login_at' => $user->getLastLoginAt()?->format('Y-m-d H:i:s')
+            'last_login' => $user->getLastLogin()?->format('Y-m-d H:i:s'),
+            'updated_at' => $user->getUpdatedAt()->format('Y-m-d H:i:s')
         ];
 
         try {
@@ -100,6 +101,15 @@ final class DoctrineUserRepository implements UserRepositoryInterface
         }
     }
 
+    public function existsByEmail(Email $email): bool
+    {
+        $result = $this->connection->fetchOne(
+            'SELECT 1 FROM users WHERE email = ? LIMIT 1',
+            [$email->getValue()]
+        );
+        return $result !== false;
+    }
+
     private function hydrate(array $data): User
     {
         // Create user instance with reflection to set private properties
@@ -113,11 +123,12 @@ final class DoctrineUserRepository implements UserRepositoryInterface
             'password' => Password::fromHash($data['password']),
             'name' => $data['name'],
             'role' => new UserRole($data['role']),
-            'createdAt' => new \DateTimeImmutable($data['created_at'])
+            'createdAt' => new \DateTimeImmutable($data['created_at']),
+            'updatedAt' => $data['updated_at'] ? new \DateTimeImmutable($data['updated_at']) : null
         ];
 
-        if ($data['last_login_at']) {
-            $properties['lastLoginAt'] = new \DateTimeImmutable($data['last_login_at']);
+        if ($data['last_login']) {
+            $properties['lastLogin'] = new \DateTimeImmutable($data['last_login']);
         }
 
         foreach ($properties as $propertyName => $value) {

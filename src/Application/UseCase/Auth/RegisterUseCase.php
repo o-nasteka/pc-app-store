@@ -29,19 +29,21 @@ final class RegisterUseCase
             throw new UserAlreadyExistsException("User with email already exists");
         }
 
-        $user = new User(
-            UserId::fromString(Uuid::uuid4()->toString()),
+        $password = Password::fromPlainText($request->password);
+        $role = new UserRole('user');
+        $user = User::create(
             $email,
-            new Password($request->password),
-            new UserRole('user'),
-            new \DateTimeImmutable()
+            $password,
+            $request->name,
+            $role
         );
 
         $this->userRepository->save($user);
 
         return new RegisterResponse(
-            id: $user->getId()->getValue(),
-            email: (string) $user->getEmail()
+            $user->getId()->getValue(),
+            (string) $user->getEmail(),
+            $user->getName()
         );
     }
 }

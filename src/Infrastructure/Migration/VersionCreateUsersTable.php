@@ -23,7 +23,8 @@ final class VersionCreateUsersTable extends AbstractMigration
             name VARCHAR(100) NOT NULL,
             role VARCHAR(20) NOT NULL,
             created_at DATETIME NOT NULL,
-            last_login_at DATETIME DEFAULT NULL,
+            updated_at DATETIME DEFAULT NULL,
+            last_login DATETIME DEFAULT NULL,
             PRIMARY KEY(id)
         )');
 

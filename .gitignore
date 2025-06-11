@@ -22,6 +22,7 @@ composer.lock
 *.swo
 *~
 .DS_Store
+.cursor/*
 
 # PHPUnit
 .phpunit.result.cache

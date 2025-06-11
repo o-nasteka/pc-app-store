@@ -21,13 +21,17 @@ final class VersionCreateActivitiesTable extends AbstractMigration
     {
         $this->addSql('
         CREATE TABLE activities (
-            id INT AUTO_INCREMENT NOT NULL,
-            user_id INT NOT NULL,
+            id VARCHAR(64) NOT NULL,
+            user_id VARCHAR(64) DEFAULT NULL,
             type VARCHAR(255) NOT NULL,
-            started_at DATETIME NOT NULL,
+            page VARCHAR(255) DEFAULT NULL,
+            button VARCHAR(255) DEFAULT NULL,
+            ip_address VARCHAR(45) DEFAULT NULL,
+            user_agent TEXT,
+            started_at DATETIME DEFAULT NULL,
             ended_at DATETIME DEFAULT NULL,
             created_at DATETIME NOT NULL,
-            updated_at DATETIME NOT NULL,
+            updated_at DATETIME DEFAULT NULL,
             INDEX IDX_USER_ID (user_id),
             PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB

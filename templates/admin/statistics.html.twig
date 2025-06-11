@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Activity Statistics{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h3>Activity Statistics</h3>
+            </div>
+            <div class="card-body">
+                <form method="get" class="mb-4">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="startDate" class="form-label">Start Date</label>
+                                <input type="date" class="form-control" id="startDate" name="startDate" value="{{ startDate|default('') }}">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="endDate" class="form-label">End Date</label>
+                                <input type="date" class="form-control" id="endDate" name="endDate" value="{{ endDate|default('') }}">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="user" class="form-label">User</label>
+                                <select class="form-select" id="user" name="user">
+                                    <option value="">All Users</option>
+                                    {% for user in users %}
+                                        <option value="{{ user.id }}" {% if selectedUser == user.id %}selected{% endif %}>
+                                            {{ user.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="action" class="form-label">Action</label>
+                                <select class="form-select" id="action" name="action">
+                                    <option value="">All Actions</option>
+                                    <option value="login" {% if selectedAction == 'login' %}selected{% endif %}>Login</option>
+                                    <option value="logout" {% if selectedAction == 'logout' %}selected{% endif %}>Logout</option>
+                                    <option value="registration" {% if selectedAction == 'registration' %}selected{% endif %}>Registration</option>
+                                    <option value="view_page" {% if selectedAction == 'view_page' %}selected{% endif %}>View Page</option>
+                                    <option value="button_click" {% if selectedAction == 'button_click' %}selected{% endif %}>Button Click</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">&nbsp;</label>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>Action</th>
+                                <th>Page</th>
+                                <th>Button</th>
+                                <th>IP Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for activity in activities %}
+                                <tr>
+                                    <td>{{ activity.createdAt }}</td>
+                                    <td>{{ activity.user_name }}</td>
+                                    <td>{{ activity.type }}</td>
+                                    <td>{{ activity.page|default('-') }}</td>
+                                    <td>{{ activity.button|default('-') }}</td>
+                                    <td>{{ activity.ipAddress }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" class="text-center">No activities found</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {# Pagination controls #}
+                {% if totalPages > 1 %}
+                <nav aria-label="Activity pagination">
+                    <ul class="pagination justify-content-center mt-4">
+                        <li class="page-item{% if page == 1 %} disabled{% endif %}">
+                            <a class="page-link" href="?page={{ page - 1 }}{% if perPage %}&perPage={{ perPage }}{% endif %}{% if startDate %}&startDate={{ startDate }}{% endif %}{% if endDate %}&endDate={{ endDate }}{% endif %}{% if selectedUser %}&user={{ selectedUser }}{% endif %}{% if selectedAction %}&action={{ selectedAction }}{% endif %}">Previous</a>
+                        </li>
+                        {% for p in 1..totalPages %}
+                            <li class="page-item{% if p == page %} active{% endif %}">
+                                <a class="page-link" href="?page={{ p }}{% if perPage %}&perPage={{ perPage }}{% endif %}{% if startDate %}&startDate={{ startDate }}{% endif %}{% if endDate %}&endDate={{ endDate }}{% endif %}{% if selectedUser %}&user={{ selectedUser }}{% endif %}{% if selectedAction %}&action={{ selectedAction }}{% endif %}">{{ p }}</a>
+                            </li>
+                        {% endfor %}
+                        <li class="page-item{% if page == totalPages %} disabled{% endif %}">
+                            <a class="page-link" href="?page={{ page + 1 }}{% if perPage %}&perPage={{ perPage }}{% endif %}{% if startDate %}&startDate={{ startDate }}{% endif %}{% if endDate %}&endDate={{ endDate }}{% endif %}{% if selectedUser %}&user={{ selectedUser }}{% endif %}{% if selectedAction %}&action={{ selectedAction }}{% endif %}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
