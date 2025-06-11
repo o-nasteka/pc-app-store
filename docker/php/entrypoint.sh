@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+# Create .env from .env.example if not exists
+if [ ! -f .env ] && [ -f .env.example ]; then
+  cp .env.example .env
+fi
+
 # Wait for MySQL to be ready
 until mysql -h mysql -uapp_user -papp_password -e "SELECT 1" activity_tracker; do
   echo "Waiting for MySQL to be ready..."
