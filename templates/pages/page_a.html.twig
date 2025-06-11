@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page A{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">Page A</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="buyCowSection">
+                            <h4 class="text-center mb-4">Would you like to buy a cow?</h4>
+                            <div class="d-grid gap-2 col-6 mx-auto">
+                                <button id="buyCowButton" class="btn btn-primary btn-lg">Buy a cow</button>
+                            </div>
+                        </div>
+                        <div id="thankYouSection" class="text-center" style="display: none;">
+                            <h4 class="text-success">Thank you for your purchase!</h4>
+                            <p>Your cow will be delivered soon.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="/" class="btn btn-secondary mt-4">&larr; Back to Home</a>
+{% endblock %}

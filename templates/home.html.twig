@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <div class="mt-5">
+        <h1 class="mb-4">Welcome{% if app.session.get('user') %}, {{ app.session.get('user').name }}{% endif %}!</h1>
+
+        <p>This is the homepage of your application.</p>
+
+        <div class="mt-4">
+            <a href="/page-a" class="btn btn-outline-primary me-2">Page A</a>
+            <a href="/page-b" class="btn btn-outline-secondary">Page B</a>
+        </div>
+    </div>
+{% endblock %}

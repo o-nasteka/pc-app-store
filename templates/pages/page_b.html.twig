@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page B{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">Page B</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center">
+                            <h4 class="mb-4">Download our sample application</h4>
+                            <div class="d-grid gap-2 col-6 mx-auto">
+                                <a href="/downloads/sample.exe" class="btn btn-primary btn-lg" id="downloadButton">
+                                    Download
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="/" class="btn btn-secondary mt-4">&larr; Back to Home</a>
+    </div>
+{% endblock %}
