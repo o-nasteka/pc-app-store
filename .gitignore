@@ -71,3 +71,6 @@ Desktop.ini
 *.tmp
 *.temp
 /tmp/
+
+# Build files
+/public/build/

@@ -58,6 +58,19 @@ php bin/console migrations:migrate
 
 ---
 
+## Дефолтний адміністратор
+
+Після розгортання автоматично створюється користувач-адміністратор:
+
+| Field    | Value              |
+|----------|--------------------|
+| Email    | admin@example.com  |
+| Password | admin123           |
+| Name     | Administrator      |
+| Role     | admin              |
+
+---
+
 ## Структура проекту
 
 - `src/` — основний код (Domain, Application, Infrastructure, Presentation)
@@ -75,6 +88,19 @@ php bin/console migrations:migrate
 - **PHP**: 8.2, з усіма потрібними розширеннями, Composer, Yarn, Node.js.
 - **Webpack Encore**: сучасний пайплайн для JS/CSS, всі скрипти збираються в `public/build/app.js`.
 - **MySQL**: 8.0, всі дані зберігаються у volume.
+
+---
+
+## Повний reset (скидання) бази даних і проекту
+
+Щоб повністю видалити всі дані, базу, volume і розгорнути проект з нуля:
+
+```bash
+docker-compose down -v
+docker-compose up --build
+```
+
+- Це видалить всі дані MySQL і створить нову базу, користувача, пароль, застосує всі міграції та seed-дані автоматично.
 
 ---
 

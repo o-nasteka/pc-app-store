@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+# Wait for MySQL to be ready
+until mysql -h mysql -uapp_user -papp_password -e "SELECT 1" activity_tracker; do
+  echo "Waiting for MySQL to be ready..."
+  sleep 2
+done
+
 # Install PHP dependencies
 composer install --no-interaction --prefer-dist
 
@@ -11,8 +17,11 @@ npm run build
 # Run migrations (if needed)
 php bin/console migrations:migrate --no-interaction
 
-# (Optional) Seed test data
-# php bin/console analytics:seed
+# Create admin user (idempotent)
+php bin/console app:create-admin
+
+# Seed analytics data (idempotent)
+php bin/console analytics:seed || true
 
 # Start PHP-FPM
 exec php-fpm 
