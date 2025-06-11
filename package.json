@@ -16,6 +16,7 @@
   "description": "",
   "devDependencies": {
     "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
     "@symfony/webpack-encore": "^5.1.0",
     "chart.js": "^4.4.9",
     "core-js": "^3.43.0",
