@@ -1,0 +1,184 @@
+classDiagram
+    %% Domain Layer
+    class User {
+        -UserId id
+        -Email email
+        -Password password
+        -string name
+        -UserRole role
+        -DateTimeImmutable createdAt
+        -DateTimeImmutable lastLoginAt
+        +create()
+        +updateLastLogin()
+        +changePassword()
+        +isAdmin()
+    }
+
+    class Activity {
+        -ActivityId id
+        -UserId userId
+        -ActivityType type
+        -array metadata
+        -string ipAddress
+        -string userAgent
+        -DateTimeImmutable createdAt
+        +create()
+        +toArray()
+    }
+
+    class UserId {
+        -UuidInterface value
+        +generate()
+        +fromString()
+        +getValue()
+        +equals()
+    }
+
+    class Email {
+        -string value
+        +getValue()
+        +equals()
+    }
+
+    class Password {
+        -string hashedValue
+        +fromPlainText()
+        +fromHash()
+        +verify()
+        +needsRehash()
+    }
+
+    class UserRole {
+        -string value
+        +user()
+        +admin()
+        +getValue()
+    }
+
+    class ActivityType {
+        -string value
+        +login()
+        +logout()
+        +registration()
+        +viewPage()
+        +buttonClick()
+    }
+
+    %% Repository Interfaces
+    class UserRepositoryInterface {
+        <<interface>>
+        +save(User)
+        +findById(UserId)
+        +findByEmail(Email)
+        +findAll()
+        +delete(User)
+    }
+
+    class ActivityRepositoryInterface {
+        <<interface>>
+        +save(Activity)
+        +findById(ActivityId)
+        +findByUserId(UserId)
+        +findByFilters(array)
+        +getStatistics()
+        +getReportData()
+    }
+
+    %% Application Layer
+    class LoginUseCase {
+        -UserRepositoryInterface userRepo
+        -ActivityRepositoryInterface activityRepo
+        +execute(LoginRequest)
+    }
+
+    class RegisterUseCase {
+        -UserRepositoryInterface userRepo
+        -ActivityRepositoryInterface activityRepo
+        +execute(RegisterRequest)
+    }
+
+    class TrackPageViewUseCase {
+        -ActivityRepositoryInterface activityRepo
+        +execute(TrackPageViewRequest)
+    }
+
+    class GetStatisticsUseCase {
+        -ActivityRepositoryInterface activityRepo
+        +execute(GetStatisticsRequest)
+    }
+
+    %% Infrastructure Layer
+    class DoctrineUserRepository {
+        -Connection connection
+        +save(User)
+        +findById(UserId)
+        +findByEmail(Email)
+        +findAll()
+        +delete(User)
+    }
+
+    class DoctrineActivityRepository {
+        -Connection connection
+        +save(Activity)
+        +findById(ActivityId)
+        +findByUserId(UserId)
+        +findByFilters(array)
+        +getStatistics()
+        +getReportData()
+    }
+
+    %% Presentation Layer
+    class AuthController {
+        -Environment twig
+        -LoginUseCase loginUseCase
+        -RegisterUseCase registerUseCase
+        -SessionInterface session
+        +showLogin()
+        +login()
+        +showRegister()
+        +register()
+        +logout()
+    }
+
+    class PageController {
+        -Environment twig
+        -TrackPageViewUseCase trackPageViewUseCase
+        -SessionInterface session
+        +showPageA()
+        +showPageB()
+    }
+
+    class ActivityController {
+        -TrackButtonClickUseCase trackButtonClickUseCase
+        -GetStatisticsUseCase getStatisticsUseCase
+        -SessionInterface session
+        +trackButtonClick()
+        +getStatistics()
+        +getReport()
+    }
+
+    %% Relationships
+    User --> UserId : has
+    User --> Email : has
+    User --> Password : has
+    User --> UserRole : has
+    
+    Activity --> ActivityId : has
+    Activity --> UserId : references
+    Activity --> ActivityType : has
+
+    LoginUseCase --> UserRepositoryInterface : uses
+    LoginUseCase --> ActivityRepositoryInterface : uses
+    RegisterUseCase --> UserRepositoryInterface : uses
+    RegisterUseCase --> ActivityRepositoryInterface : uses
+    
+    TrackPageViewUseCase --> ActivityRepositoryInterface : uses
+    GetStatisticsUseCase --> ActivityRepositoryInterface : uses
+
+    DoctrineUserRepository ..|> UserRepositoryInterface : implements
+    DoctrineActivityRepository ..|> ActivityRepositoryInterface : implements
+
+    AuthController --> LoginUseCase : uses
+    AuthController --> RegisterUseCase : uses
+    PageController --> TrackPageViewUseCase : uses
+    ActivityController --> GetStatisticsUseCase : uses
